@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Digital Clock</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1d1d1d;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .clock-container {
+            text-align: center;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            padding: 30px 50px;
+            border-radius: 20px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.4);
+            width: 300px;
+        }
+        .clock-container h1 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+        .clock {
+            font-size: 60px;
+            letter-spacing: 3px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .date {
+            margin-top: 15px;
+            font-size: 20px;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+        /* Animation for smooth clock update */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="clock-container">
+        <h1>Digital Clock</h1>
+        <div class="clock" id="clock">00:00:00</div>
+        <div class="date" id="date">Loading date...</div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+
+            // Time - 12-hour format with AM/PM
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // The hour '0' should be '12'
+            const timeString = `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+
+            // Date
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+            const day = days[now.getDay()];
+            const month = months[now.getMonth()];
+            const date = now.getDate();
+            const year = now.getFullYear();
+
+            // Update UI with fade effect
+            const clock = document.getElementById('clock');
+            const dateElement = document.getElementById('date');
+
+            clock.classList.add('fade-in');
+            clock.textContent = timeString;
+            dateElement.textContent = `${day}, ${month} ${date}, ${year}`;
+
+          
+            setTimeout(() => clock.classList.remove('fade-in'), 500);
+        }
+
+        // Update every second
+        setInterval(updateClock, 1000);
+        updateClock(); // Initialize clock immediately
+    </script>
+</body>
+</html>
